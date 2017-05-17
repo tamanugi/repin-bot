@@ -18,8 +18,20 @@ var bot = controller.spawn({
   }
 });
 
+let canPinRemoved = false;
+
+controller.hears('ピンはずさせてやー', ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
+  canPinRemoved = true;
+  bot.reply(message, '30秒だけ待ったる');
+  setTimeout((bot, message) => {
+    canPinRemoved = false;
+    bot.reply(message, 'ほい時間ぎれー');
+  }, 30000, bot, message);
+});
 
 controller.on('pin_removed', function(bot, message) {
+
+  if(canPinRemoved) return;
 
   bot.api.users.info({
     user: message.user
@@ -39,7 +51,6 @@ controller.on('pin_removed', function(bot, message) {
       channel: message.channel_id
     });
   });
-
 
 
 });
