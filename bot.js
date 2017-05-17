@@ -17,8 +17,7 @@ var bot = controller.spawn({
 controller.on('pin_removed', function(bot, message) {
 
   bot.api.pins.add({
-    token: process.env.token
-    , channel: message.channel_id
+    channel: message.channel_id
     , timestamp: message.item.message.ts
   })
 
