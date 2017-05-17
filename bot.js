@@ -16,14 +16,25 @@ var bot = controller.spawn({
 
 controller.on('pin_removed', function(bot, message) {
 
-  bot.api.pins.add({
-    channel: message.channel_id
-    , timestamp: message.item.message.ts
-  })
+  bot.api.users.info({
+    user: message.user
+  }, function(error, result){
+    if(error) console.log(error);
 
-  bot.say({
-    text: '勝手にピンはずさんといてやー。しゃあないからもっかいピンしといたでー'
-    , channel: message.channel_id
-  })
+    let userName = result.user.name;
+
+    bot.api.pins.add({
+      channel: message.channel_id
+      , timestamp: message.item.message.ts
+    });
+
+    bot.say({
+      text: `ちょっと @${userName} はん。 勝手にピンはずさんといてやー。\nしゃあないからもっかいピンしといたでー`
+      , link_names: true
+      , channel: message.channel_id
+    });
+  });
+
+
 
 });
