@@ -12,7 +12,11 @@ var controller = Botkit.slackbot({
 var bot = controller.spawn({
   token: process.env.token
   , retry: true
-}).startRTM();
+}).startRTM(function(error){
+  if(error){
+    throw new Error(error);
+  }
+});
 
 
 controller.on('pin_removed', function(bot, message) {
